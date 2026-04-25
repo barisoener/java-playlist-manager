@@ -2,31 +2,37 @@ package com.baris.playlistmanager.app;
 
 import com.baris.playlistmanager.iterator.PlaylistIterator;
 import com.baris.playlistmanager.model.MediaFile;
-import com.baris.playlistmanager.model.Mp3File;
 import com.baris.playlistmanager.model.Playlist;
-import com.baris.playlistmanager.model.WavFile;
+import com.baris.playlistmanager.factory.MediaFileFactory;
 
 public class Main{
   public static void main(String[] args){
     System.out.println("Playlist Manager Started");
 
-       MediaFile song1 = new Mp3File(
-                "1",
-                "Blinding Lights",
-                "The Weeknd",
-                200,
-                "songs/blindinglights.mp3",
-                "After Hours"
-        );
+      MediaFile song1 = MediaFileFactory.createFromPath(
+        "1",
+        "Test Song",
+        "Test Artist",
+        200,
+        "media/test-song.mp3"
+);
 
-        MediaFile song2 = new WavFile(
-                "2",
-                "Interstellar Theme",
-                "Hans Zimmer",
-                240,
-                "songs/interstellar.wav",
-                44100
-        );
+MediaFile song2 = MediaFileFactory.createFromPath(
+        "2",
+        "Another Song",
+        "Another Artist",
+        240,
+        "media/sample-audio.wav"
+);
+//for testing factory class
+
+ MediaFile badSong = MediaFileFactory.createFromPath(
+    "3",
+    "Bad Song",
+    "Unknown",
+    100,
+    "media/test.txt"
+); 
 
         Playlist playlist= new Playlist("first playlist");
         playlist.addSong(song1);
