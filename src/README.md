@@ -1,27 +1,39 @@
 # Java Playlist Manager
 
-A command-line playlist manager built in Java.
-This project demonstrates object-oriented programming, design patterns, and basic file system integration.
+A lightweight command-line playlist manager built in Java, demonstrating object-oriented design principles and design patterns such as Factory and Iterator.
 
 ## Features
 
-* Add songs manually via CLI (MP3 or WAV)
-* Automatically scan and load media files from a local `media/` folder
-* Support for multiple file types (MP3, WAV)
+* Add songs manually via CLI (virtual entries)
+* Automatically scan and load MP3/WAV files from a local `media/` folder
 * Search songs by title or artist
 * Sort songs by title or duration
 * Custom iterator implementation for playlist traversal
 * Input validation with custom exception handling
 
-## Technologies and Concepts
+## Demo
 
-* Java
+```
+=== Playlist Manager ===
+1 - Add song
+2 - List songs
+3 - Search
+4 - Sort songs
+5 - Exit
+```
+
+## Architecture
+
+* Factory Pattern: Used to create song objects based on file type (MP3, WAV)
+* Iterator Pattern: Custom implementation for traversing the playlist
+
+## Concepts Demonstrated
+
 * Object-Oriented Programming (OOP)
 * Inheritance and Abstraction
-* Factory Design Pattern
-* Iterator Pattern
+* Design Patterns (Factory, Iterator)
 * Exception Handling
-* File System (java.io.File)
+* File System interaction (`java.io.File`)
 * Command Line Interface (CLI)
 
 ## Project Structure
@@ -44,38 +56,35 @@ src/
 git clone https://github.com/barisoener/java-playlist-manager.git
 ```
 
-2. Open in an IDE (VS Code or IntelliJ)
-
-3. Create a `media/` folder and add `.mp3` or `.wav` files
-
-4. Run `Main.java`
-
-## Example Usage
+2. Navigate into the project folder:
 
 ```
-=== Playlist Manager ===
-1 - Add song
-2 - List songs
-3 - Search
-4 - Sort songs
-5 - Exit
+cd java-playlist-manager
 ```
 
-## Notes
+3. Open in an IDE (IntelliJ or VS Code)
 
-* Auto-loaded files use default metadata (filename, "Unknown Artist", fixed duration)
-* Manual entries are not linked to real files (use placeholder path)
-* Manual entries are treated as virtual songs within the playlist
-* Unsupported file types are skipped with a console message
+4. Create a `media/` folder and add `.mp3` or `.wav` files
+
+5. Run `Main.java`
+
+## Why This Project?
+
+This project was built to practice object-oriented programming and apply design patterns in a simple real-world scenario.
+
+## Limitations
+
+* No real audio playback
+* Metadata is not extracted from files
+* Manually added songs are not linked to actual files
 
 ## Future Improvements
 
 * Add JavaFX GUI
 * Extract real MP3 metadata
-* Add audio playback
+* Add audio playback support
 * Save/load playlists from file
 
 ## Author
 
 Baris Oener
-
