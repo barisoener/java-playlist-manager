@@ -1,8 +1,12 @@
 package com.baris.playlistmanager.app;
 
 import com.baris.playlistmanager.factory.MediaFileFactory;
+import com.baris.playlistmanager.iterator.PlaylistIterator;
 import com.baris.playlistmanager.model.MediaFile;
+import com.baris.playlistmanager.model.Mp3File;
 import com.baris.playlistmanager.model.Playlist;
+import com.baris.playlistmanager.model.WavFile;
+
 import java.io.File;
 import java.util.Scanner;
 
@@ -20,8 +24,9 @@ public class Main{
         System.out.println("\n=== Playlist Manager ===");
         System.out.println("1 - Add song");
         System.out.println("2 - List songs");
-        System.out.println("3 - Search by title");
-        System.out.println("4 - Exit");
+        System.out.println("3 - Search");
+        System.out.println("4- Sort songs");
+        System.out.println("5 - Exit");
         System.out.print("Choice: ");
 
         int choice = scanner.nextInt();
@@ -35,10 +40,13 @@ public class Main{
                 listSongs(playlist);
                 break;
             case 3:
-                searchByTitle(scanner, playlist);
+                searchSongs(scanner,playlist);
                 break;
             case 4:
-                running = false;
+                sortSongs(scanner,playlist);
+                break;
+            case 5:
+                running=false;
                 break;
             default:
                 System.out.println("Invalid choice");
@@ -72,18 +80,39 @@ private static void addSong(Scanner scanner, Playlist playlist) {
         int duration = scanner.nextInt();
         scanner.nextLine();
 
-        System.out.print("File name inside media folder, e.g. test-song.mp3: ");
-        String fileName = scanner.nextLine();
+        System.out.println("File type:");
+        System.out.println("1 - MP3");
+        System.out.println("2 - WAV");
+        System.out.print("Choice: ");
 
-        String path = "media/" + fileName;
+        int type = scanner.nextInt();
+        scanner.nextLine();
 
-        MediaFile song = MediaFileFactory.createFromPath(
-                id,
-                title,
-                artist,
-                duration,
-                path
-        );
+        MediaFile song;
+
+        // Manual creation: choose type without using factory
+        if (type == 1) {
+            song = new Mp3File(
+                    id,
+                    title,
+                    artist,
+                    duration,
+                    "manual-entry",
+                    "User input"
+            );
+        } else if (type == 2) {
+            song = new WavFile(
+                    id,
+                    title,
+                    artist,
+                    duration,
+                    "manual-entry",
+                    44100
+            );
+        } else {
+            System.out.println("Invalid file type.");
+            return;
+        }
 
         playlist.addSong(song);
         System.out.println("Song added successfully.");
@@ -99,20 +128,58 @@ private static void listSongs(Playlist playlist) {
         return;
     }
 
-    for (MediaFile song : playlist.getAllSongs()) {
-        System.out.println(song);
+    PlaylistIterator iterator = new PlaylistIterator(playlist);
+
+    while (iterator.hasNext()) {
+        System.out.println(iterator.next());
     }
 }
 
-private static void searchByTitle(Scanner scanner, Playlist playlist) {
-    System.out.print("Search keyword: ");
+
+
+private static void sortSongs(Scanner scanner, Playlist playlist) {
+
+    System.out.println("1 - Sort by title");
+    System.out.println("2 - Sort by duration");
+    System.out.print("Choice: ");
+
+    int choice = scanner.nextInt();
+    scanner.nextLine();
+
+    if (choice == 1) {
+        playlist.sortByTitle();
+        System.out.println("Songs sorted by title.");
+    } else if (choice == 2) {
+        playlist.sortByDuration();
+        System.out.println("Songs sorted by duration.");
+    } else {
+        System.out.println("Invalid choice.");
+    }
+}
+private static void searchSongs(Scanner scanner, Playlist playlist) {
+
+    System.out.println("1 - Search by title");
+    System.out.println("2 - Search by artist");
+    System.out.print("Choice: ");
+
+    int choice = scanner.nextInt();
+    scanner.nextLine();
+
+    System.out.print("Keyword: ");
     String keyword = scanner.nextLine();
 
-    for (MediaFile song : playlist.searchByTitle(keyword)) {
-        System.out.println(song);
+    if (choice == 1) {
+        for (MediaFile song : playlist.searchByTitle(keyword)) {
+            System.out.println(song);
+        }
+    } else if (choice == 2) {
+        for (MediaFile song : playlist.searchByArtist(keyword)) {
+            System.out.println(song);
+        }
+    } else {
+        System.out.println("Invalid choice.");
     }
 }
-
 
 private static void loadMediaFolder(Playlist playlist) {
 

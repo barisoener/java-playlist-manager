@@ -8,6 +8,7 @@ import com.baris.playlistmanager.model.Mp3File;
 import com.baris.playlistmanager.model.WavFile;
 
 public class MediaFileFactory {
+    
      public static MediaFile createFromPath(String id, String title,String artist,int durationInSeconds,String filePath)
      {
        validateFilePath(filePath);
@@ -24,6 +25,8 @@ public class MediaFileFactory {
 
         throw new InvalidMediaFileException("Unsupported file type: " + extension);
      }
+
+
 
       private static void validateFilePath(String filePath) {
         if (filePath == null || filePath.isBlank()) {

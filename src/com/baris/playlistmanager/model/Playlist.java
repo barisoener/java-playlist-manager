@@ -5,7 +5,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public class Playlist{
-   private String name;
+    private String name;
     private List<MediaFile> songs;
     private int currentIndex;
 
