@@ -3,13 +3,16 @@ package com.baris.playlistmanager.app;
 import com.baris.playlistmanager.factory.MediaFileFactory;
 import com.baris.playlistmanager.model.MediaFile;
 import com.baris.playlistmanager.model.Playlist;
-
+import java.io.File;
 import java.util.Scanner;
 
 public class Main{
  public static void main(String[] args) {
     Scanner scanner = new Scanner(System.in);
     Playlist playlist = new Playlist("My Playlist");
+
+    //to add existing songs from media
+    loadMediaFolder(playlist);
 
     boolean running = true;
 
@@ -110,5 +113,38 @@ private static void searchByTitle(Scanner scanner, Playlist playlist) {
     }
 }
 
+
+private static void loadMediaFolder(Playlist playlist) {
+
+    File folder = new File("media/");
+    File[] files = folder.listFiles();
+
+    if (files == null) {
+        System.out.println("Media folder not found or empty.");
+        return;
+    }
+
+    for (File file : files) {
+
+        if (!file.isFile()) {
+            continue;
+        }
+
+        try {
+            MediaFile song = MediaFileFactory.createFromPath(
+                    "auto-" + file.getName(),
+                    file.getName(),
+                    "Unknown Artist",
+                    180,
+                    file.getPath()
+            );
+
+            playlist.addSong(song);
+
+        } catch (Exception e) {
+            System.out.println("Skipping file: " + file.getName());
+        }
+    }
+}
 
 }
